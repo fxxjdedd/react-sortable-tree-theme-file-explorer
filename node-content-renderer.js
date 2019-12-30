@@ -1,19 +1,22 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styles from './node-content-renderer.scss';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import styles from "./node-content-renderer.scss";
 
 function isDescendant(older, younger) {
   return (
     !!older.children &&
-    typeof older.children !== 'function' &&
+    typeof older.children !== "function" &&
     older.children.some(
       child => child === younger || isDescendant(child, younger)
     )
   );
 }
 
-// eslint-disable-next-line react/prefer-stateless-function
 class FileThemeNodeContentRenderer extends Component {
+  state = {
+    selectedNode: null
+  };
+
   render() {
     const {
       scaffoldBlockPxWidth,
@@ -65,7 +68,7 @@ class FileThemeNodeContentRenderer extends Component {
       if (treeIndex !== listIndex && i === swapDepth) {
         // This row has been shifted, and is at the depth of
         // the line pointing to the new destination
-        let highlightLineClass = '';
+        let highlightLineClass = "";
 
         if (listIndex === swapFrom + swapLength - 1) {
           // This block is on the bottom (target) line
@@ -84,7 +87,7 @@ class FileThemeNodeContentRenderer extends Component {
             key={`highlight_${1 + i}`}
             style={{
               width: scaffoldBlockPxWidth,
-              left: scaffoldBlockPxWidth * i,
+              left: scaffoldBlockPxWidth * i
             }}
             className={`${styles.absoluteLineBlock} ${highlightLineClass}`}
           />
@@ -93,24 +96,24 @@ class FileThemeNodeContentRenderer extends Component {
     });
 
     const nodeContent = (
-      <div style={{ height: '100%' }} {...otherProps}>
+      <div style={{ height: "100%" }} {...otherProps}>
         {toggleChildrenVisibility &&
           node.children &&
           node.children.length > 0 && (
             <button
               type="button"
-              aria-label={node.expanded ? 'Collapse' : 'Expand'}
+              aria-label={node.expanded ? "Collapse" : "Expand"}
               className={
                 node.expanded ? styles.collapseButton : styles.expandButton
               }
               style={{
-                left: (lowerSiblingCounts.length - 0.7) * scaffoldBlockPxWidth,
+                left: (lowerSiblingCounts.length - 0.7) * scaffoldBlockPxWidth
               }}
               onClick={() =>
                 toggleChildrenVisibility({
                   node,
                   path,
-                  treeIndex,
+                  treeIndex
                 })
               }
             />
@@ -119,33 +122,33 @@ class FileThemeNodeContentRenderer extends Component {
         <div
           className={
             styles.rowWrapper +
-            (!canDrag ? ` ${styles.rowWrapperDragDisabled}` : '')
+            (!canDrag ? ` ${styles.rowWrapperDragDisabled}` : "")
           }
         >
           {/* Set the row preview to be used during drag and drop */}
           {connectDragPreview(
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: "flex" }}>
               {scaffold}
               <div
                 className={
                   styles.row +
-                  (isLandingPadActive ? ` ${styles.rowLandingPad}` : '') +
+                  (isLandingPadActive ? ` ${styles.rowLandingPad}` : "") +
                   (isLandingPadActive && !canDrop
                     ? ` ${styles.rowCancelPad}`
-                    : '') +
-                  (isSearchMatch ? ` ${styles.rowSearchMatch}` : '') +
-                  (isSearchFocus ? ` ${styles.rowSearchFocus}` : '') +
-                  (className ? ` ${className}` : '')
+                    : "") +
+                  (isSearchMatch ? ` ${styles.rowSearchMatch}` : "") +
+                  (isSearchFocus ? ` ${styles.rowSearchFocus}` : "") +
+                  (className ? ` ${className}` : "")
                 }
                 style={{
                   opacity: isDraggedDescendant ? 0.5 : 1,
-                  ...style,
+                  ...style
                 }}
               >
                 <div
                   className={
                     styles.rowContents +
-                    (!canDrag ? ` ${styles.rowContentsDragDisabled}` : '')
+                    (!canDrag ? ` ${styles.rowContentsDragDisabled}` : "")
                   }
                 >
                   <div className={styles.rowToolbar}>
@@ -160,11 +163,11 @@ class FileThemeNodeContentRenderer extends Component {
                   </div>
                   <div className={styles.rowLabel}>
                     <span className={styles.rowTitle}>
-                      {typeof nodeTitle === 'function'
+                      {typeof nodeTitle === "function"
                         ? nodeTitle({
                             node,
                             path,
-                            treeIndex,
+                            treeIndex
                           })
                         : nodeTitle}
                     </span>
@@ -189,7 +192,7 @@ class FileThemeNodeContentRenderer extends Component {
     );
 
     return canDrag
-      ? connectDragSource(nodeContent, { dropEffect: 'copy' })
+      ? connectDragSource(nodeContent, { dropEffect: "copy" })
       : nodeContent;
   }
 }
@@ -198,7 +201,7 @@ FileThemeNodeContentRenderer.defaultProps = {
   buttons: [],
   canDrag: false,
   canDrop: false,
-  className: '',
+  className: "",
   draggedNode: null,
   icons: [],
   isSearchFocus: false,
@@ -209,7 +212,7 @@ FileThemeNodeContentRenderer.defaultProps = {
   swapFrom: null,
   swapLength: null,
   title: null,
-  toggleChildrenVisibility: null,
+  toggleChildrenVisibility: null
 };
 
 FileThemeNodeContentRenderer.propTypes = {
@@ -246,7 +249,7 @@ FileThemeNodeContentRenderer.propTypes = {
   parentNode: PropTypes.shape({}), // Needed for dndManager
   // Drop target
   canDrop: PropTypes.bool,
-  isOver: PropTypes.bool.isRequired,
+  isOver: PropTypes.bool.isRequired
 };
 
 export default FileThemeNodeContentRenderer;
